@@ -20,7 +20,7 @@ public class TeamEntity implements java.io.Serializable {
     // estratégia para o banco gerar as PK automaticamente
     private Long id;
     private String country;
-    private String fofaCode;
+    private String fifaCode;
     private String coach;
     private Integer playerQuantity;
 
@@ -40,12 +40,12 @@ public class TeamEntity implements java.io.Serializable {
         this.country = country;
     }
 
-    public String getFofaCode() {
-        return fofaCode;
+    public String getFifaCode() {
+        return fifaCode;
     }
 
-    public void setFofaCode(String fofaCode) {
-        this.fofaCode = fofaCode;
+    public void setFifaCode(String fofaCode) {
+        this.fifaCode = fofaCode;
     }
 
     public String getCoach() {
