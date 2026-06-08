@@ -24,4 +24,33 @@ public class TeamService {
 	    return repository.findById(id)
 	                     .orElseThrow(() -> new EntityNotFoundException());
 	}
+
+	public void deleteById(Long id)
+    {
+        if(repository.existsById(id))
+            repository.deleteById(id);
+        else
+           throw new EntityNotFoundException("Produto não cadastrado");
+    }
+
+    public TeamEntity save(TeamEntity team)
+    {
+         return repository.save(team);
+    }
+
+    public void update(TeamEntity team, Long id)
+    {
+        TeamEntity t  = repository.findById(id)
+                               .orElseThrow(() -> new EntityNotFoundException("Time não cadastrado"));
+
+        t.setCoach(team.getCoach());                                
+        t.setFifaCode(team.getFifaCode());
+		t.setCountry(team.getCountry());
+		t.setPlayerQuantity(team.getPlayerQuantity());
+        
+
+        repository.save(t);
+
+
+    }
 }
