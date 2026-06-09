@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.fatec.soccer_backend.dto.TeamRequest;
 import com.fatec.soccer_backend.entities.TeamEntity;
 import com.fatec.soccer_backend.services.TeamService;
+
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/teams")
 public class TeamController {
@@ -30,38 +34,35 @@ public class TeamController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TeamEntity> getById(@PathVariable long id) {
+    public ResponseEntity<TeamEntity> getById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
-     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable long id) {
+    @PostMapping
+    public ResponseEntity<TeamEntity> save(@RequestBody @Valid TeamRequest request) {
+
+        TeamEntity saved = service.save(request);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(saved.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(saved);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TeamEntity> update(
+            @PathVariable Long id,
+            @RequestBody @Valid TeamRequest request) {
+
+        return ResponseEntity.ok(service.update(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-
-    @PostMapping
-    public ResponseEntity<TeamEntity> save(@RequestBody TeamEntity team)
-    {
-        TeamEntity t = service.save(team);
-       
-        URI location = ServletUriComponentsBuilder
-                       .fromCurrentRequest()
-                       .path("/{id}")
-                       .buildAndExpand(t.getId())
-                       .toUri();
-        
-        return ResponseEntity.created(location).body(t);
-
-
-    }
-
-    @PutMapping("{id}")
-    public ResponseEntity<Void> update(@PathVariable long id,
-                                       @RequestBody TeamEntity team)
-    {
-            service.update(team, id);
-            return ResponseEntity.noContent().build();
-    }
-
 }

@@ -18,7 +18,6 @@ public record TeamRequest(
     @NotBlank
     String coach,
 
-    @NotBlank
     @Min(value = 3)
     @Max(value=32)
     Integer playerQuantity

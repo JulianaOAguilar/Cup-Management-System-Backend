@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fatec.soccer_backend.dto.TeamRequest;
 import com.fatec.soccer_backend.entities.TeamEntity;
 import com.fatec.soccer_backend.repository.TeamRepository;
 
@@ -12,45 +13,44 @@ import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class TeamService {
-	
-	@Autowired
-	private TeamRepository repository;
-	
-	public List<TeamEntity> findAll() {
-	    return repository.findAll();
-	}
-	
-	public TeamEntity findById(Long id) {
-	    return repository.findById(id)
-	                     .orElseThrow(() -> new EntityNotFoundException());
-	}
 
-	public void deleteById(Long id)
-    {
-        if(repository.existsById(id))
-            repository.deleteById(id);
-        else
-           throw new EntityNotFoundException("Produto não cadastrado");
+    @Autowired
+    private TeamRepository repository;
+
+    public TeamEntity save(TeamRequest request) {
+
+        TeamEntity entity = new TeamEntity();
+        entity.setCountry(request.country());
+        entity.setFifaCode(request.fifaCode());
+        entity.setCoach(request.coach());
+        entity.setPlayerQuantity(request.playerQuantity());
+
+        return repository.save(entity);
     }
 
-    public TeamEntity save(TeamEntity team)
-    {
-         return repository.save(team);
+    public List<TeamEntity> findAll() {
+        return repository.findAll();
     }
 
-    public void update(TeamEntity team, Long id)
-    {
-        TeamEntity t  = repository.findById(id)
-                               .orElseThrow(() -> new EntityNotFoundException("Time não cadastrado"));
+    public TeamEntity findById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Time não encontrado"));
+    }
 
-        t.setCoach(team.getCoach());                                
-        t.setFifaCode(team.getFifaCode());
-		t.setCountry(team.getCountry());
-		t.setPlayerQuantity(team.getPlayerQuantity());
-        
+    public void deleteById(Long id) {
+        repository.deleteById(id);
+    }
 
-        repository.save(t);
+    public TeamEntity update(Long id, TeamRequest request) {
 
+        TeamEntity entity = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Time não encontrado"));
 
+        entity.setCountry(request.country());
+        entity.setFifaCode(request.fifaCode());
+        entity.setCoach(request.coach());
+        entity.setPlayerQuantity(request.playerQuantity());
+
+        return repository.save(entity);
     }
 }
