@@ -7,6 +7,7 @@ import com.fatec.soccer_backend.entities.TeamEntity;
 
 @Repository
 public interface TeamRepository extends JpaRepository<TeamEntity, Long>{
-    
+        boolean existsByFifaCode(String fifaCode);
+
 }
 
