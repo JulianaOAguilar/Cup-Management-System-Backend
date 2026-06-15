@@ -20,9 +20,9 @@ import com.fatec.soccer_backend.services.TournamentService;
 
 import jakarta.validation.Valid;
 
+@CrossOrigin(origins="http://localhost:4200")
 @RestController
 @RequestMapping("/tournaments")
-@CrossOrigin("*")
 public class TournamentController {
 
     @Autowired

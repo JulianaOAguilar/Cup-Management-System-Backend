@@ -1,5 +1,6 @@
 package com.fatec.soccer_backend.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +27,17 @@ public class TournamentService {
     // -------------------------
     // mapper Entity -> Response
     // -------------------------
-    private TournamentResponse toResponse(TournamentEntity entity) {
-        return new TournamentResponse(
-                entity.getId(),
-                entity.getTeam1().getCountry(), // ou getName()
-                entity.getTeam2().getCountry(),
-                entity.getLocation(),
-                entity.getMatchDateTime()
-        );
-    }
+   private TournamentResponse toResponse(TournamentEntity entity) {
+    return new TournamentResponse(
+        entity.getId(),
+        entity.getTeam1().getId(),
+        entity.getTeam2().getId(),
+        entity.getTeam1().getCountry(),
+        entity.getTeam2().getCountry(),
+        entity.getLocation(),
+        entity.getMatchDateTime()
+    );
+}
 
     // -------------------------
     // CREATE
@@ -52,7 +55,10 @@ public class TournamentService {
         tournament.setTeam1(team1);
         tournament.setTeam2(team2);
         tournament.setLocation(request.location());
-        tournament.setMatchDateTime(request.matchDateTime());
+LocalDateTime matchDateTime = request.matchDateTime();
+        
+
+        tournament.setMatchDateTime(matchDateTime);
 
         TournamentEntity saved = tournamentRepository.save(tournament);
 
@@ -104,7 +110,9 @@ public class TournamentService {
         tournament.setTeam1(team1);
         tournament.setTeam2(team2);
         tournament.setLocation(request.location());
-        tournament.setMatchDateTime(request.matchDateTime());
+        LocalDateTime matchDateTime = request.matchDateTime();
+
+        tournament.setMatchDateTime(matchDateTime);
 
         TournamentEntity updated = tournamentRepository.save(tournament);
 
