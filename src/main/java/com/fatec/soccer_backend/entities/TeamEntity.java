@@ -24,6 +24,8 @@ public class TeamEntity implements java.io.Serializable {
     private String coach;
     private Integer playerQuantity;
 
+    
+
     public Long getId() {
         return id;
     }
